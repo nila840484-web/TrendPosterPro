@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrendPosterPro</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0B1120; color:#F8FAFC; font-family:Arial,sans-serif; }
+    .header { background:#131E35; padding:16px 20px; border-bottom:3px solid #F97316; }
+    .header h1 { font-size:20px; color:#F97316; }
+    .header p { font-size:12px; color:#94A3B8; margin-top:4px; }
+    .container { padding:16px; }
+    .card { background:#131E35; border-radius:12px; padding:16px; margin-bottom:16px; border:1px solid #1A2640; }
+    .card h2 { font-size:14px; color:#94A3B8; margin-bottom:12px; }
+    input { width:100%; background:#0B1120; border:1px solid #F97316; border-radius:8px; padding:10px; color:#F8FAFC; font-size:14px; margin-bottom:8px; }
+    .toggle-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #1A2640; }
+    .toggle-label { font-size:14px; }
+    .toggle { position:relative; width:44px; height:24px; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#475569; border-radius:24px; transition:.3s; }
+    .slider:before { position:absolute; content:""; height:18px; width:18px; left:3px; bottom:3px; background:white; border-radius:50%; transition:.3s; }
+    input:checked + .slider { background:#22C55E; }
+    input:checked + .slider:before { transform:translateX(20px); }
+    .btn { width:100%; padding:14px; border:none; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; margin-bottom:10px; }
+    .btn-start { background:#22C55E; color:white; }
+    .btn-stop { background:#F43F5E; color:white; }
+    .btn-post { background:#F97316; color:white; }
+    .stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+    .stat { background:#0B1120; border-radius:8px; padding:12px; text-align:center; border:1px solid #1A2640; }
+    .stat-val { font-size:22px; font-weight:bold; color:#38BDF8; }
+    .stat-label { font-size:10px; color:#94A3B8; margin-top:4px; }
+    .log { background:#0B1120; border-radius:8px; padding:12px; height:150px; overflow-y:auto; font-size:12px; color:#94A3B8; }
+    .status { display:inline-block; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:bold; }
+    .status.on { background:#22C55E22; color:#22C55E; }
+    .status.off { background:#F43F5E22; color:#F43F5E; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔥 TrendPosterPro</h1>
+  <p>AI-powered Auto Content System</p>
+</div>
+
+<div class="container">
+
+  <!-- SmartLink -->
+  <div class="card">
+    <h2>🔗 ADSTERRA SMARTLINK</h2>
+    <input type="text" id="smartLink" placeholder="তোমার SmartLink এখানে দাও"/>
+    <button class="btn btn-post" onclick="saveLink()">SAVE LINK</button>
+  </div>
+
+  <!-- Mode Control -->
+  <div class="card">
+    <h2>⚙️ MODE CONTROL</h2>
+    <div class="toggle-row">
+      <span class="toggle-label">🌐 Website (Blogger)</span>
+      <label class="toggle"><input type="checkbox" id="modeWebsite" checked><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">✈️ Telegram</span>
+      <label class="toggle"><input type="checkbox" id="modeTelegram" checked><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">📘 Facebook</span>
+      <label class="toggle"><input type="checkbox" id="modeFacebook" checked><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">▶️ YouTube</span>
+      <label class="toggle"><input type="checkbox" id="modeYoutube"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="card">
+    <h2>📊 TODAY'S STATS</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val" id="totalPosts">0</div>
+        <div class="stat-label">Posts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="totalTopics">0</div>
+        <div class="stat-label">Topics</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" id="estEarn">$0</div>
+        <div class="stat-label">Est. Earn</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="card">
+    <h2>🎮 CONTROL</h2>
+    <button class="btn btn-start" onclick="startBot()">▶ START AUTO POST</button>
+    <button class="btn btn-stop" onclick="stopBot()">⏹ STOP</button>
+    <button class="btn btn-post" onclick="postNow()">⚡ POST NOW (Manual)</button>
+  </div>
+
+  <!-- Log -->
+  <div class="card">
+    <h2>📋 ACTIVITY LOG</h2>
+    <div class="log" id="logBox">System ready...</div>
+  </div>
+
+</div>
+
+<script>
+  function saveLink() {
+    const link = document.getElementById("smartLink").value;
+    if (!link) return alert("SmartLink দাও আগে!");
+    google.script.run.updateSmartLink(link);
+    addLog("✅ SmartLink saved!");
+  }
+
+  function startBot() {
+    google.script.run.withSuccessHandler(() => {
+      addLog("✅ Auto post started!");
+    }).startScheduler();
+  }
+
+  function stopBot() {
+    google.script.run.withSuccessHandler(() => {
+      addLog("⏹ Stopped.");
+    }).stopScheduler();
+  }
+
+  function postNow() {
+    addLog("⚡ Posting now...");
+    google.script.run.withSuccessHandler(() => {
+      addLog("✅ Posted successfully!");
+    }).runAll();
+  }
+
+  function addLog(msg) {
+    const log = document.getElementById("logBox");
+    const time = new Date().toLocaleTimeString();
+    log.innerHTML = `[${time}] ${msg}\n` + log.innerHTML;
+  }
+</script>
+
+</body>
+</html>
