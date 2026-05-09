@@ -2,9 +2,9 @@
 //  blogger_poster.gs — Website Post
 // ════════════════════════════════════════
 
-function postToBlogger(title, description, imageUrl, topic) {
+function postToBlogger(title, description, imageUrl, topic, category) {
   try {
-    const smartLink = CONFIG.SMART_LINK;
+    const cloakedLink = "https://newsfromeworld.blogspot.com/p/go.html";
     const linkText = CONFIG.LINK_TEXT;
 
     const content = `
@@ -14,7 +14,7 @@ function postToBlogger(title, description, imageUrl, topic) {
   <p style="font-size:17px;line-height:1.8;color:#333">${description}</p>
   <br/>
   <div style="text-align:center;margin:30px 0">
-    <a href="${smartLink}" 
+    <a href="${cloakedLink}"
        style="background:#FF6B00;color:white;padding:15px 30px;
               border-radius:8px;text-decoration:none;font-size:18px;font-weight:bold">
       ${linkText}
@@ -24,11 +24,12 @@ function postToBlogger(title, description, imageUrl, topic) {
     `;
 
     const url = `https://www.googleapis.com/blogger/v3/blogs/${CONFIG.BLOGGER_BLOG_ID}/posts/`;
-    
+
     const payload = {
       kind: "blogger#post",
       title: title,
-      content: content
+      content: content,
+      labels: [category]
     };
 
     const options = {
