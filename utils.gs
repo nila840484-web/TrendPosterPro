@@ -1,3 +1,4 @@
+
 // ════════════════════════════════════════
 //  utils.gs — Helper Functions
 // ════════════════════════════════════════
@@ -5,13 +6,11 @@
 // ── Date & Time ──
 function getBDTime() {
   const now = new Date();
-  const bd = new Date(now.getTime() + (6 * 60 * 60 * 1000));
-  return bd;
+  return new Date(now.getTime() + (6 * 60 * 60 * 1000));
 }
 
 function getFormattedDate() {
-  const bd = getBDTime();
-  return Utilities.formatDate(bd, "Asia/Dhaka", "dd MMM yyyy, hh:mm a");
+  return Utilities.formatDate(getBDTime(), "Asia/Dhaka", "dd MMM yyyy, hh:mm a");
 }
 
 // ── Already Posted Check ──
@@ -24,18 +23,25 @@ function isAlreadyPosted(topic) {
 function markAsPosted(topic) {
   const cache = CacheService.getScriptCache();
   const key = "posted_" + topic.replace(/\s+/g, "_").toLowerCase();
-  cache.put(key, "1", 60 * 60 * 6); // 6 ঘন্টা মনে রাখবে
+  cache.put(key, "1", 60 * 60 * 6);
 }
 
-// ── Log ──
+// ── Log ──  ✅ Fixed: Google Sheet বাদ, Properties use করছি
 function logActivity(message) {
-  const sheet = getLogSheet();
-  sheet.appendRow([getFormattedDate(), message]);
+  const log = getFormattedDate() + " → " + message;
+  console.log(log);
+  
+  const props = PropertiesService.getScriptProperties();
+  const existing = props.getProperty("activity_log") || "";
+  const updated = log + "\n" + existing;
+  // শুধু শেষ 50টা log রাখবো
+  const lines = updated.split("\n").slice(0, 50).join("\n");
+  props.setProperty("activity_log", lines);
 }
 
-function getLogSheet() {
-  const ss = SpreadsheetApp.openById(CONFIG.LOG_SHEET_ID);
-  return ss.getSheetByName("Log") || ss.insertSheet("Log");
+function getActivityLog() {
+  const props = PropertiesService.getScriptProperties();
+  return props.getProperty("activity_log") || "No activity yet.";
 }
 
 // ── Clean Text ──
