@@ -32,9 +32,10 @@ function runAll() {
 }
 
 function startScheduler() {
+  // ✅ Fixed: 15 minutes use করছি
   ScriptApp.newTrigger("runAll")
     .timeBased()
-    .everyMinutes(CONFIG.POST_INTERVAL_MINUTES)
+    .everyMinutes(15)
     .create();
   logActivity("✅ Scheduler Started");
 }
