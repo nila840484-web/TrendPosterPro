@@ -19,7 +19,7 @@ const CONFIG = {
   TRENDS_CATEGORY: "all",
 
   // ── POSTING SCHEDULE ──
-  POST_INTERVAL_MINUTES: 20,
+  POST_INTERVAL_MINUTES: 15, // ✅ Fixed: 20 বাদ, 15 দিলাম
 
   // ── SOCIAL MEDIA ──
   TELEGRAM_BOT_TOKEN: "এখানে Telegram Bot Token দাও",
@@ -32,14 +32,11 @@ const CONFIG = {
   MODE_YOUTUBE:  false,
 
   // ── CATEGORIES ──
-  CATEGORIES: {
-    "আন্তর্জাতিক": "International",
-    "বাংলাদেশ": "Bangladesh",
-    "খেলাধুলা": "Sports",
-    "বিনোদন": "Entertainment",
-    "প্রযুক্তি": "Technology",
-    "অন্যান্য": "Others"
-  },
+  CATEGORIES: [
+    "International", "Bangladesh",
+    "Sports", "Entertainment",
+    "Technology", "Others"
+  ],
 
   // ── COPYRIGHT SENSITIVE TOPICS ──
   COPYRIGHT_TOPICS: [
