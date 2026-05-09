@@ -14,18 +14,13 @@ function runAll() {
     const imageUrl = generateImage(topic);
     const title = content.title;
     const description = content.description;
+    const category = content.category;
 
     if (CONFIG.MODE_WEBSITE) {
-      postToBlogger(title, description, imageUrl, topic);
+      postToBlogger(title, description, imageUrl, topic, category);
     }
     if (CONFIG.MODE_TELEGRAM) {
       postToTelegram(title, description, imageUrl);
-    }
-    if (CONFIG.MODE_FACEBOOK) {
-      postToFacebook(title, description);
-    }
-    if (CONFIG.MODE_YOUTUBE) {
-      postToYoutube(title, description);
     }
 
     markAsPosted(topic);
