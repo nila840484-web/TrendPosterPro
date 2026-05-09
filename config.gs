@@ -12,7 +12,7 @@ const CONFIG = {
   GEMINI_API_KEY: "এখানে Gemini API Key দাও",
 
   // ── BLOGGER ──
-  BLOGGER_BLOG_ID: "এখানে Blog ID দাও",
+  BLOGGER_BLOG_ID: "370859862873813353",
 
   // ── GOOGLE TRENDS ──
   TRENDS_COUNTRY: "BD",
@@ -24,12 +24,27 @@ const CONFIG = {
   // ── SOCIAL MEDIA ──
   TELEGRAM_BOT_TOKEN: "এখানে Telegram Bot Token দাও",
   TELEGRAM_CHANNEL_ID: "এখানে Channel ID দাও",
-  FACEBOOK_PAGE_TOKEN: "এখানে Facebook Page Token দাও",
-  FACEBOOK_PAGE_ID:    "এখানে Facebook Page ID দাও",
 
   // ── MODE CONTROL ──
   MODE_WEBSITE:  true,
   MODE_TELEGRAM: true,
-  MODE_FACEBOOK: true,
+  MODE_FACEBOOK: false,
   MODE_YOUTUBE:  false,
+
+  // ── CATEGORIES ──
+  CATEGORIES: {
+    "আন্তর্জাতিক": "International",
+    "বাংলাদেশ": "Bangladesh",
+    "খেলাধুলা": "Sports",
+    "বিনোদন": "Entertainment",
+    "প্রযুক্তি": "Technology",
+    "অন্যান্য": "Others"
+  },
+
+  // ── COPYRIGHT SENSITIVE TOPICS ──
+  COPYRIGHT_TOPICS: [
+    "ronaldo", "messi", "iphone", "samsung",
+    "actor", "actress", "singer", "celebrity",
+    "movie", "film", "drama", "concert"
+  ]
 };
